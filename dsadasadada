@@ -5,7 +5,7 @@ local LocalPlayer = Players.LocalPlayer
 -- Load Rayfield UI library
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 local Window = Rayfield:CreateWindow({
-    Name = "Pet & Seed Spawner",
+    Name = "PEPEPEPEPEPEPE",
     LoadingTitle = "Pet & Seed Spawner",
     LoadingSubtitle = "Made by whqtt",
     Theme = "Default"
@@ -30,61 +30,53 @@ PetTab:CreateInput({
 PetTab:CreateButton({
     Name = "Spawn",
     Callback = function()
-        Name = "Spawn",
-    Callback = function()
         -- Access pet data from PetRegistry
         local petData = require(ReplicatedStorage.Data.PetRegistry.PetList)[petName]
+        
+        if petData then
+            -- Create a new Tool instance for the pet
+            local petTool = Instance.new("Tool")  -- Create a new tool for the pet
+            petTool.Name = petName  -- Set the name of the tool
+            petTool.RequiresHandle = true  -- Ensure the tool requires a handle
 
-        if not success then
-            warn("Error accessing PetRegistry: " .. tostring(petData))
-            return
+            -- Set pet properties with random values for weight and age
+            local petWeight = math.random(1, 10)  -- Random weight between 1 and 10
+            local petAge = math.random(1, 5)  -- Random age between 1 and 5
+
+            local petWeightAttribute = Instance.new("NumberValue", petTool)
+            petWeightAttribute.Name = "Weight"
+            petWeightAttribute.Value = petWeight
+
+            local petAgeAttribute = Instance.new("NumberValue", petTool)
+            petAgeAttribute.Name = "Age"
+            petAgeAttribute.Value = petAge
+
+            -- Clone the pet model from ReplicatedStorage if it exists
+            local petModel = ReplicatedStorage.Data.PetRegistry.PetList(petName)  -- Keep this line as is
+            if not petModel then
+                warn("Pet model not found in ReplicatedStorage: " .. petName)
+                return
+            end
+
+            local petClone = petModel:Clone()
+            petClone.Parent = petTool  -- Set the cloned model as a child of the pet tool
+
+            -- Check if the pet model has a PrimaryPart set
+            if not petClone.PrimaryPart then
+                warn("Pet model does not have a PrimaryPart set: " .. petName)
+                return
+            end
+
+            -- Set the pet's position (for example, spawn it at the player's position)
+            petClone:SetPrimaryPartCFrame(LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 5, 0))  -- Spawn above the player
+
+            -- Parent the pet tool to the player's backpack
+            petTool.Parent = LocalPlayer.Backpack
+
+            print("Spawning pet: " .. petName .. ", Weight: " .. petWeight .. ", Age: " .. petAge)
+        else
+            warn("Pet not found: " .. petName)
         end
-
-        if not petData then
-            warn("Pet not found in registry: " .. petName)
-            return
-        end
-
-        -- Create a new Tool instance for the pet
-        local petTool = Instance.new("Tool")  -- Create a new tool for the pet
-        petTool.Name = petName  -- Set the name of the tool
-        petTool.RequiresHandle = true  -- Ensure the tool requires a handle
-
-        -- Set pet properties with random values for weight and age
-        local petWeight = math.random(1, 10)  -- Random weight between 1 and 10
-        local petAge = math.random(1, 5)  -- Random age between 1 and 5
-
-        local petWeightAttribute = Instance.new("NumberValue", petTool)
-        petWeightAttribute.Name = "Weight"
-        petWeightAttribute.Value = petWeight
-
-        local petAgeAttribute = Instance.new("NumberValue", petTool)
-        petAgeAttribute.Name = "Age"
-        petAgeAttribute.Value = petAge
-
-        -- Clone the pet model from ReplicatedStorage if it exists
-        local petModel = ReplicatedStorage.PetModels:FindFirstChild(petName)  -- Keep this line as is
-        if not petModel then
-            warn("Pet model not found in ReplicatedStorage: " .. petName)
-            return
-        end
-
-        local petClone = petModel:Clone()
-        petClone.Parent = petTool  -- Set the cloned model as a child of the pet tool
-
-        -- Check if the pet model has a PrimaryPart set
-        if not petClone.PrimaryPart then
-            warn("Pet model does not have a PrimaryPart set: " .. petName)
-            return
-        end
-
-        -- Set the pet's position (for example, spawn it at the player's position)
-        petClone:SetPrimaryPartCFrame(LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 5, 0))  -- Spawn above the player
-
-        -- Parent the pet tool to the player's backpack
-        petTool.Parent = LocalPlayer.Backpack
-
-        print("Spawning pet: " .. petName .. ", Weight: " .. petWeight .. ", Age: " .. petAge)
     end
 })
 
