@@ -5,9 +5,9 @@ local LocalPlayer = Players.LocalPlayer
 -- Load Rayfield UI library
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 local Window = Rayfield:CreateWindow({
-    Name = "PEPE",
-    LoadingTitle = "Pepe",
-    LoadingSubtitle = "Made by Pepe",
+    Name = "Pet & Seed Spawner",
+    LoadingTitle = "Pet & Seed Spawner",
+    LoadingSubtitle = "Made by whqtt",
     Theme = "Default"
 })
 
@@ -16,8 +16,6 @@ local PetTab = Window:CreateTab("Pet Spawner", 136232391555861)
 PetTab:CreateSection("Pet Spawner")
 
 local petName = "Raccoon"
-local petWeight = 1
-local petAge = 1
 
 PetTab:CreateInput({
     Name = "Pet Name",
@@ -29,35 +27,20 @@ PetTab:CreateInput({
     end
 })
 
-PetTab:CreateInput({
-    Name = "Pet Weight",
-    PlaceholderText = "1",
-    CurrentValue = "",
-    RemoveTextAfterFocusLost = false,
-    Callback = function(value)
-        petWeight = tonumber(value) or 1
-    end
-})
-
-PetTab:CreateInput({
-    Name = "Pet Age",
-    PlaceholderText = "1",
-    CurrentValue = "",
-    RemoveTextAfterFocusLost = false,
-    Callback = function(value)
-        petAge = tonumber(value) or 1
-    end
-})
-
 PetTab:CreateButton({
     Name = "Spawn",
     Callback = function()
-        -- Access pet data from PetRegistry
+        -- Attempt to access pet data from PetRegistry
         local success, petData = pcall(function()
             return require(ReplicatedStorage.Data.PetRegistry.PetList)[petName]
         end)
 
-        if not success or not petData then
+        if not success then
+            warn("Error accessing PetRegistry: " .. tostring(petData))
+            return
+        end
+
+        if not petData then
             warn("Pet not found in registry: " .. petName)
             return
         end
@@ -66,7 +49,10 @@ PetTab:CreateButton({
         local pet = Instance.new("Model")  -- Create a new model for the pet
         pet.Name = petName  -- Set the name of the pet
 
-        -- Set pet properties
+        -- Set pet properties with random values for weight and age
+        local petWeight = math.random(1, 10)  -- Random weight between 1 and 10
+        local petAge = math.random(1, 5)  -- Random age between 1 and 5
+
         local petWeightAttribute = Instance.new("NumberValue", pet)
         petWeightAttribute.Name = "Weight"
         petWeightAttribute.Value = petWeight
