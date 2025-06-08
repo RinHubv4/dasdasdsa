@@ -5,7 +5,7 @@ local LocalPlayer = Players.LocalPlayer
 -- Load Rayfield UI library
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 local Window = Rayfield:CreateWindow({
-    Name = "PEPE",
+    Name = "PEPEPEPEPE",
     LoadingTitle = "Pet & Seed Spawner",
     LoadingSubtitle = "Made by whqtt",
     Theme = "Default"
@@ -45,19 +45,20 @@ PetTab:CreateButton({
             return
         end
 
-        -- Create a new pet instance
-        local pet = Instance.new("Model")  -- Create a new model for the pet
-        pet.Name = petName  -- Set the name of the pet
+        -- Create a new Tool instance for the pet
+        local petTool = Instance.new("Tool")  -- Create a new tool for the pet
+        petTool.Name = petName  -- Set the name of the tool
+        petTool.RequiresHandle = true  -- Ensure the tool requires a handle
 
         -- Set pet properties with random values for weight and age
         local petWeight = math.random(1, 10)  -- Random weight between 1 and 10
         local petAge = math.random(1, 5)  -- Random age between 1 and 5
 
-        local petWeightAttribute = Instance.new("NumberValue", pet)
+        local petWeightAttribute = Instance.new("NumberValue", petTool)
         petWeightAttribute.Name = "Weight"
         petWeightAttribute.Value = petWeight
 
-        local petAgeAttribute = Instance.new("NumberValue", pet)
+        local petAgeAttribute = Instance.new("NumberValue", petTool)
         petAgeAttribute.Name = "Age"
         petAgeAttribute.Value = petAge
 
@@ -69,7 +70,7 @@ PetTab:CreateButton({
         end
 
         local petClone = petModel:Clone()
-        petClone.Parent = pet  -- Set the cloned model as a child of the pet model
+        petClone.Parent = petTool  -- Set the cloned model as a child of the pet tool
 
         -- Check if the pet model has a PrimaryPart set
         if not petClone.PrimaryPart then
@@ -80,8 +81,8 @@ PetTab:CreateButton({
         -- Set the pet's position (for example, spawn it at the player's position)
         petClone:SetPrimaryPartCFrame(LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 5, 0))  -- Spawn above the player
 
-        -- Parent the pet to the workspace
-        pet.Parent = game.Workspace
+        -- Parent the pet tool to the player's backpack
+        petTool.Parent = LocalPlayer.Backpack
 
         print("Spawning pet: " .. petName .. ", Weight: " .. petWeight .. ", Age: " .. petAge)
     end
