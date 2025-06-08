@@ -30,10 +30,10 @@ PetTab:CreateInput({
 PetTab:CreateButton({
     Name = "Spawn",
     Callback = function()
-        -- Attempt to access pet data from PetRegistry
-        local success, petData = pcall(function()
-            return ReplicatedStorage.Data.PetRegistry.PetList(petName)  -- Call the function with parentheses
-        end)
+        Name = "Spawn",
+    Callback = function()
+        -- Access pet data from PetRegistry
+        local petData = require(ReplicatedStorage.Data.PetRegistry.PetList)[petName]
 
         if not success then
             warn("Error accessing PetRegistry: " .. tostring(petData))
