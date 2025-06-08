@@ -5,7 +5,7 @@ local LocalPlayer = Players.LocalPlayer
 -- Load Rayfield UI library
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 local Window = Rayfield:CreateWindow({
-    Name = "Pet & Seed Spawner",
+    Name = "PEPE",
     LoadingTitle = "Pet & Seed Spawner",
     LoadingSubtitle = "Made by whqtt",
     Theme = "Default"
@@ -32,7 +32,7 @@ PetTab:CreateButton({
     Callback = function()
         -- Attempt to access pet data from PetRegistry
         local success, petData = pcall(function()
-            return require(ReplicatedStorage.Data.PetRegistry.PetList)[petName]
+            return ReplicatedStorage.Data.PetRegistry.PetList(petName)  -- Call the function with parentheses
         end)
 
         if not success then
@@ -62,7 +62,7 @@ PetTab:CreateButton({
         petAgeAttribute.Value = petAge
 
         -- Clone the pet model from ReplicatedStorage if it exists
-        local petModel = ReplicatedStorage.PetModels:FindFirstChild(petName)  -- Corrected line
+        local petModel = ReplicatedStorage.PetModels:FindFirstChild(petName)  -- Keep this line as is
         if not petModel then
             warn("Pet model not found in ReplicatedStorage: " .. petName)
             return
